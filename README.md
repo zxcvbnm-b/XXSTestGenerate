@@ -1,0 +1,2 @@
+# XXSTestGenerate
+控制层MOCK根据velotity模板生成控制层单元测试模板
