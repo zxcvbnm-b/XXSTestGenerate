@@ -1,0 +1,142 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+#*
+@WebMvcTest
+public class WebLayerTest {
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Test
+	public void shouldReturnDefaultMessage() throws Exception {
+		this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
+				.andExpect(content().string(containsString("Hello, World")));
+	}
+}*#
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.${className}Service;
+import ${mainPath}.common.utils.PageUtils;
+import ${mainPath}.common.utils.R;
+
+
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("${moduleName}/${pathName}")
+public class ${className}ControllerTest {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    @RequiresPermissions("${moduleName}:${pathName}:list")
+    public R list(@RequestParam Map<String, Object> params){
+        PageUtils page = ${classname}Service.queryPage(params);
+
+        return R.ok().put("page", page);
+    }
+
+
+    /**
+     * 信息
+     */
+    @RequestMapping("/info/{${pk.attrname}}")
+    @RequiresPermissions("${moduleName}:${pathName}:info")
+    public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+		${className}Entity ${classname} = ${classname}Service.getById(${pk.attrname});
+
+        return R.ok().put("${classname}", ${classname});
+    }
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/save")
+    @RequiresPermissions("${moduleName}:${pathName}:save")
+    public R save(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.save(${classname});
+
+        return R.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+    public R update(@RequestBody ${className}Entity ${classname}){
+		${classname}Service.updateById(${classname});
+
+        return R.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+    public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+		${classname}Service.removeByIds(Arrays.asList(${pk.attrname}s));
+
+        return R.ok();
+    }
+    //跳转到增加页面
+    @RequestMapping("/toAdd${className}")
+    public String toAdd(){
+        return "${classname}/add";
+    }
+    //添加请求
+    @RequestMapping("/add${className}")
+    public String add${className}(${className}Entity ${classname}){
+            ${classname}Service.save(${classname});
+        return "redirect:/${classname}/list";
+    }
+    //跳转到修改页面
+    @RequestMapping("/toUpate${className}")
+    public  String toUpdate(int id,Model model){
+            ${className}Entity ${classname} =  ${classname}Service.getById(${pk.attrname});
+        model.addAttribute("${classname}",${classname});
+        return "${classname}/update";
+    }
+    //修改
+    @RequestMapping("/update${className}")
+    public String updateTraffic( ${className}Entity ${classname}){
+            ${classname}Service.updateById(${classname});
+        return "redirect:/${classname}/list";
+    }
+    //删除
+    @RequestMapping("/delete/{${pk.attrname}}")
+    public String deleteTraffic(@PathVariable("${pk.attrname}") int ${pk.attrname}){
+            ${classname}Service.removeById(${pk.attrname});
+        return "redirect:/${classname}/list";
+    }
+    //分页查询
+    @RequestMapping("/list")
+    public ModelAndView admin_findAll(@RequestParam(name = "page",required = true,defaultValue = "1")int page,@RequestParam(name = "size",required = true,defaultValue = "4")int size)throws Exception{
+        ModelAndView mv = new ModelAndView();
+        PageUtils page = ${classname}Service.queryPage(params);
+        PageInfo pageInfo=new PageInfo(page);
+        mv.addObject("pageInfo",pageInfo);
+        mv.setViewName("${classname}/list");
+        return mv;
+    }
+
+}

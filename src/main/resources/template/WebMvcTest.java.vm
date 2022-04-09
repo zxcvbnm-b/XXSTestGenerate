@@ -1,0 +1,67 @@
+package ${packageName};
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+
+//报错：java.lang.IllegalStateException: No ServletContext  改成  SpringBootTest.WebEnvironment.RANDOM_PORT
+@AutoConfigureMockMvc// 没有这个 不能注入mvc 会找不到的
+public class ${className}Test {
+    @Autowired
+    private WebApplicationContext wac;
+    @Autowired
+    private MockMvc mvc;
+
+    private MockHttpSession session;
+
+    @Before
+    public void mockMvcBefore(){
+#*        session = new MockHttpSession();
+        User user =new User("root","root");
+        session.setAttribute("user",user); //拦截器那边会判断用户是否登录，所以这里注入一个用户*#
+    }
+    #foreach($item in $mockRequestEntities)
+    @Test
+    @Transactional
+    public void ${item.methodName}() throws Exception {
+        String urlTemplate="$!{item.urlTemplate}";
+        String contextPath="$!{item.contextPath}";
+        HttpMethod httpMethod =HttpMethod.$!{item.httpMethod};
+        HttpHeaders httpHeaders =new HttpHeaders();
+        #foreach($httpHeader in $!item.httpHeaders.entrySet())
+        httpHeaders.add("$!{httpHeader.key}", "$!{httpHeader.value}");
+        #end
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        #foreach($param in $!item.params.entrySet())
+         params.add("$!{param.key}", "$!{param.value}");
+        #end
+        String content=#if($!{item.content}=="")"" #else $!{item.content} #end;
+        MediaType contentType=MediaType.$!{item.contentTypeString};
+        // 不设置：accept会乱码的吧。。。。
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.request(httpMethod,urlTemplate).
+                contextPath(contextPath).headers(httpHeaders).queryParams(params).params(params).content(content).contentType(contentType).accept(contentType);
+        /*andExpect添加断言*/
+        mvc.perform(mockHttpServletRequestBuilder).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print()).andReturn();
+    }
+    #end
+}
