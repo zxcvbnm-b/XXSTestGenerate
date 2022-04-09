@@ -6,6 +6,8 @@ public class VelocityGenOneTestDTO {
     private List<MockControllerMethodRequestEntity> mockControllerMethodRequestEntities;
     private String packageName;
     private String className;
+    private boolean isOpenTransaction;
+
 
     public List<MockControllerMethodRequestEntity> getMockControllerMethodRequestEntities() {
         return mockControllerMethodRequestEntities;
@@ -29,5 +31,13 @@ public class VelocityGenOneTestDTO {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public boolean isOpenTransaction() {
+        return isOpenTransaction;
+    }
+
+    public void setOpenTransaction(boolean openTransaction) {
+        isOpenTransaction = openTransaction;
     }
 }

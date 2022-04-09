@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
+/*控制器方法参数处理*/
 public class MethodParamDispatch {
   private List<MethodParamResolver> resolvers=new ArrayList<>();
   public MethodParamDispatch(){

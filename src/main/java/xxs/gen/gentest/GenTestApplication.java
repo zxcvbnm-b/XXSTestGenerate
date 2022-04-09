@@ -42,8 +42,11 @@ import java.util.Map;
 /*6.添加配置文件，把一些东西弄成可配置项--可以使用spring的配置文件--1*/
 /*给json字符串处理掉双引号的问题--1*/
 /*7.针对构造请求参数问题，需要解决掉 复杂对象的参数的构造问题 比如基本数据类型，集合等。*/
-@Component
-public class genTestApplication implements ApplicationContextAware, ApplicationRunner {
+/*如果要在其他项目中使用：需要注入这个类到容器中才得，不然得不到 applicationContext */
+/*maven配置了这个 就不能传递依赖了   <optional>true</optional> */
+/*TODO 在真正使用的时候不能使用：ApplicationRunner 不然的话每次启动就重新生成了测试了 ，那不行*/
+/*TODO springboot应该不能加载打包后的包的@Component的注解 所以这里加 @Component没有什么用*/
+public class GenTestApplication implements ApplicationContextAware {
 
     ApplicationContext applicationContext;
 
@@ -112,6 +115,10 @@ public class genTestApplication implements ApplicationContextAware, ApplicationR
         if(StringUtils.isNotBlank(packageName)){
             genTestConfig.setPackageName(packageName);
         }
+        boolean openTransaction = genConfigProperties.getBoolean("config.isOpenTransaction", false);
+        genTestConfig.setOpenTransaction(openTransaction);
+
+
         Map<String, String> headers = Commons.getMapValue(genConfigProperties, "request.header.");
         if(headers!=null){
             for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -121,7 +128,7 @@ public class genTestApplication implements ApplicationContextAware, ApplicationR
         Map<String, String> params = Commons.getMapValue(genConfigProperties, "request.param.");
         if(params!=null){
             for (Map.Entry<String, String> param : params.entrySet()) {
-                genTestConfig.addHealer(param.getKey(),param.getValue());
+                genTestConfig.addParam(param.getKey(),param.getValue());
             }
         }
     }
@@ -151,6 +158,7 @@ public class genTestApplication implements ApplicationContextAware, ApplicationR
         velocityGenOneTestDTO.setMockControllerMethodRequestEntities(mockRequestEntities);
         velocityGenOneTestDTO.setClassName(controllerClass.getSimpleName());
         velocityGenOneTestDTO.setPackageName(aPackage.getName());
+        velocityGenOneTestDTO.setOpenTransaction(genTestConfig.isOpenTransaction());
         GenControllerTestUtils.generatorCode(velocityGenOneTestDTO,absoluteDir);
 
     }
@@ -183,11 +191,5 @@ public class genTestApplication implements ApplicationContextAware, ApplicationR
         } catch (Exception e) {
             throw new RuntimeException("获取配置文件失败，", e);
         }
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        this.before();
-        this.application();
     }
 }

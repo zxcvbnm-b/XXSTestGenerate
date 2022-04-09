@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
+#if(${isOpenTransaction})  import org.springframework.transaction.annotation.Transactional;  #end
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
@@ -23,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-
 //报错：java.lang.IllegalStateException: No ServletContext  改成  SpringBootTest.WebEnvironment.RANDOM_PORT
 @AutoConfigureMockMvc// 没有这个 不能注入mvc 会找不到的
 public class ${className}Test {
@@ -42,7 +41,7 @@ public class ${className}Test {
     }
     #foreach($item in $mockRequestEntities)
     @Test
-    @Transactional
+    #if(${isOpenTransaction})  @Transactional  #end
     public void ${item.methodName}() throws Exception {
         String urlTemplate="$!{item.urlTemplate}";
         String contextPath="$!{item.contextPath}";
@@ -55,7 +54,7 @@ public class ${className}Test {
         #foreach($param in $!item.params.entrySet())
          params.add("$!{param.key}", "$!{param.value}");
         #end
-        String content=#if($!{item.content}=="")"" #else $!{item.content} #end;
+        String content=#if($!{item.content}=="")"" #else "$!{item.content}" #end;
         MediaType contentType=MediaType.$!{item.contentTypeString};
         // 不设置：accept会乱码的吧。。。。
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.request(httpMethod,urlTemplate).

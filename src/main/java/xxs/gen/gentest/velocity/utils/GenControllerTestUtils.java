@@ -32,6 +32,7 @@ public class GenControllerTestUtils {
         map.put("mockRequestEntities",velocityGenOneTestDTO.getMockControllerMethodRequestEntities());
         map.put("className",velocityGenOneTestDTO.getClassName());
         map.put("packageName",velocityGenOneTestDTO.getPackageName());
+        map.put("isOpenTransaction",velocityGenOneTestDTO.isOpenTransaction());
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
@@ -49,8 +50,10 @@ public class GenControllerTestUtils {
             } catch (IOException e) {
             }
         }
+
     }
     private static void writeFile(File file, String content, String fileEncoding) throws IOException {
+
         String path = file.getPath();
          path = path.substring(0, path.lastIndexOf("\\"));
         File file2=new File(path);/*要有文件夹才能生成文件*/
@@ -65,7 +68,12 @@ public class GenControllerTestUtils {
 
         try (BufferedWriter bw = new BufferedWriter(osw)) {
             bw.write(content);
+            bw.flush();
+        }finally {
+            osw.close();
+            fos.close();
         }
+
     }
     /**
      * 获取文件名

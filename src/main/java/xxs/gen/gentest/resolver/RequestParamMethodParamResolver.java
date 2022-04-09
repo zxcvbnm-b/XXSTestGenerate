@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
-
+/*处理有@RequestParam的方法参数 --注入参数*/
 public class RequestParamMethodParamResolver implements MethodParamResolver{
     @Override
     public boolean supports(MethodParameter methodParameter) {

@@ -11,7 +11,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Date;
-
+/*处理有@RequestBody的方法参数 --注入参数*/
 public class RequestBodyMethodParamResolver  implements MethodParamResolver{
 
     @Override
@@ -44,7 +44,8 @@ public class RequestBodyMethodParamResolver  implements MethodParamResolver{
 
                /*TODO 给json字符串处理掉双引号的问题*/
                if(jsonString!=null){
-                   jsonString=JSONObject.quote(jsonString);
+                  /* jsonString= JSONObject.quote(jsonString);*/
+                   jsonString = jsonString.replaceAll("\"", "\\\\\"");
                }
                mockControllerMethodRequestEntity.setContent(jsonString);
            }
@@ -66,7 +67,10 @@ public class RequestBodyMethodParamResolver  implements MethodParamResolver{
         /*创建方法参数实例对象*/
         Object parameterObject = declaredConstructor.newInstance();
         /*不注入值，但是对于null值不要忽略他*/
-        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(parameterObject,true);
+        String jsonString = com.alibaba.fastjson.JSONObject.toJSONString(parameterObject,false);
+        String jsonString2= JSONObject.quote(jsonString);
+        jsonString = jsonString.replaceAll("\"", "\\\\\"");
+        System.out.println(jsonString2);
         System.out.println(jsonString);
     }
 
