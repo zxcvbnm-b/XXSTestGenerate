@@ -40,13 +40,11 @@ public class TestControllerTest {
         public void update() throws Exception {
         String urlTemplate="/front/customermaster/update";
         String contextPath="";
-        HttpMethod httpMethod =HttpMethod.GET;
+        HttpMethod httpMethod =HttpMethod.POST;
         HttpHeaders httpHeaders =new HttpHeaders();
                 httpHeaders.add("Origin", "http://localhost:8001");
                 httpHeaders.add("token", "a71eb3569c9269e38492862c76106d69");
                 MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-                 params.add("test", "xxxx");
-                 params.add("valuexx", "xxxxdfdsf");
                 String content= "{\"content\":\"\",\"contentType\":{\"charset\":\"UTF-8\",\"concrete\":true,\"parameters\":{\"charset\":\"UTF-8\"},\"qualityValue\":1.0,\"subtype\":\"json\",\"type\":\"application\",\"wildcardSubtype\":false,\"wildcardType\":false},\"contentTypeString\":\"APPLICATION_JSON_UTF8\",\"httpHeaders\":{},\"params\":{}}" ;
         MediaType contentType=MediaType.APPLICATION_JSON_UTF8;
         // 不设置：accept会乱码的吧。。。。
@@ -59,13 +57,11 @@ public class TestControllerTest {
         public void delete() throws Exception {
         String urlTemplate="/front/customermaster/delete";
         String contextPath="";
-        HttpMethod httpMethod =HttpMethod.GET;
+        HttpMethod httpMethod =HttpMethod.POST;
         HttpHeaders httpHeaders =new HttpHeaders();
                 httpHeaders.add("Origin", "http://localhost:8001");
                 httpHeaders.add("token", "a71eb3569c9269e38492862c76106d69");
                 MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-                 params.add("test", "xxxx");
-                 params.add("valuexx", "xxxxdfdsf");
                 String content="" ;
         MediaType contentType=MediaType.APPLICATION_JSON_UTF8;
         // 不设置：accept会乱码的吧。。。。
@@ -97,13 +93,11 @@ public class TestControllerTest {
         public void save() throws Exception {
         String urlTemplate="/front/customermaster/save";
         String contextPath="";
-        HttpMethod httpMethod =HttpMethod.GET;
+        HttpMethod httpMethod =HttpMethod.POST;
         HttpHeaders httpHeaders =new HttpHeaders();
                 httpHeaders.add("Origin", "http://localhost:8001");
                 httpHeaders.add("token", "a71eb3569c9269e38492862c76106d69");
                 MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-                 params.add("test", "xxxx");
-                 params.add("valuexx", "xxxxdfdsf");
                 String content= "{\"content\":\"\",\"contentType\":{\"charset\":\"UTF-8\",\"concrete\":true,\"parameters\":{\"charset\":\"UTF-8\"},\"qualityValue\":1.0,\"subtype\":\"json\",\"type\":\"application\",\"wildcardSubtype\":false,\"wildcardType\":false},\"contentTypeString\":\"APPLICATION_JSON_UTF8\",\"httpHeaders\":{},\"params\":{}}" ;
         MediaType contentType=MediaType.APPLICATION_JSON_UTF8;
         // 不设置：accept会乱码的吧。。。。
@@ -135,14 +129,12 @@ public class TestControllerTest {
         public void sysQueryPage() throws Exception {
         String urlTemplate="/front/customermaster/list_sys";
         String contextPath="";
-        HttpMethod httpMethod =HttpMethod.GET;
+        HttpMethod httpMethod =HttpMethod.POST;
         HttpHeaders httpHeaders =new HttpHeaders();
                 httpHeaders.add("Origin", "http://localhost:8001");
                 httpHeaders.add("token", "a71eb3569c9269e38492862c76106d69");
                 MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-                 params.add("test", "xxxx");
-                 params.add("valuexx", "xxxxdfdsf");
-                String content="" ;
+                String content= "{\"content\":\"\",\"contentType\":{\"charset\":\"UTF-8\",\"concrete\":true,\"parameters\":{\"charset\":\"UTF-8\"},\"qualityValue\":1.0,\"subtype\":\"json\",\"type\":\"application\",\"wildcardSubtype\":false,\"wildcardType\":false},\"contentTypeString\":\"APPLICATION_JSON_UTF8\",\"httpHeaders\":{},\"params\":{}}" ;
         MediaType contentType=MediaType.APPLICATION_JSON_UTF8;
         // 不设置：accept会乱码的吧。。。。
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.request(httpMethod,urlTemplate).

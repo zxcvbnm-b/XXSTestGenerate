@@ -35,7 +35,7 @@ public class RequestBodyMethodParamResolver  implements MethodParamResolver{
                        parameterType.isArray()||parameterType.isAssignableFrom(Collection.class)){
                    return;
                }
-               /*获取无参数的构造犯法，*/
+               /*获取无参数的构造方法，*/
                Constructor<?> declaredConstructor = parameterType.getDeclaredConstructor();
                /*创建方法参数实例对象*/
                Object parameterObject = declaredConstructor.newInstance();

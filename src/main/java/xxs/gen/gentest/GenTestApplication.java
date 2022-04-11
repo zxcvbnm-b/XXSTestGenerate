@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -148,7 +149,9 @@ public class GenTestApplication implements ApplicationContextAware {
             MockControllerMethodRequestEntity mockControllerMethodRequestEntity = mockHttpRequestBuilder.builderMockRequestEntity(controllerRequestMappingEntityByClass);
             mockRequestEntities.add(mockControllerMethodRequestEntity);
             mockControllerMethodRequestEntity.getHttpHeaders().putAll(genTestConfig.getHealers());
-            mockControllerMethodRequestEntity.getParams().putAll(genTestConfig.getParams());
+            if(HttpMethod.GET.equals(mockControllerMethodRequestEntity.getHttpMethod())||HttpMethod.HEAD.equals(mockControllerMethodRequestEntity.getHttpMethod())){
+                mockControllerMethodRequestEntity.getParams().putAll(genTestConfig.getParams());
+            }
         }
         genTestInterceptChain.afterDispatch(mockRequestEntities);
         /*获取需要生成测试类的控制器的包*/

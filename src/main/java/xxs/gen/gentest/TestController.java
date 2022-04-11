@@ -15,16 +15,18 @@ public class TestController {
      */
     @RequestMapping("/list")
     //("front:customermaster:list")
-    public void list(@RequestParam Map<String, Object> params){
+    public Map<String, Object> list(@RequestParam Map<String, Object> params){
+        System.out.println(params);
+        return params;
     }
 
     /**
      * 列表-new
      */
-    @RequestMapping("/list_sys")
+    @PostMapping("/list_sys")
     //("front:customermaster:list")
-    public void sysQueryPage( MockControllerMethodRequestEntity params){
-
+    public MockControllerMethodRequestEntity sysQueryPage(@RequestBody MockControllerMethodRequestEntity params){
+       return  params;
     }
 
     /**
@@ -32,26 +34,26 @@ public class TestController {
      */
     @RequestMapping("/info/{id}")
     //("front:customermaster:info")
-    public void info(@PathVariable("id") Long id){
-
+    public Long info(@PathVariable("id") Long id){
+    return id;
     }
 
     /**
      * 保存
      */
-    @RequestMapping("/save")
+    @PostMapping("/save")
     //("front:customermaster:save")
-    public void save(@RequestBody MockControllerMethodRequestEntity customerMaster){
-
+    public MockControllerMethodRequestEntity save(@RequestBody MockControllerMethodRequestEntity customerMaster){
+    return customerMaster;
     }
 
     /**
      * 修改
      */
-    @RequestMapping("/update")
+    @PostMapping("/update")
     //("front:customermaster:update")
-    public void update(@RequestBody MockControllerMethodRequestEntity customerMaster){
-
+    public MockControllerMethodRequestEntity update(@RequestBody MockControllerMethodRequestEntity customerMaster){
+      return customerMaster;
 
     }
 
@@ -60,7 +62,8 @@ public class TestController {
      */
     @RequestMapping("/delete")
     //("front:customermaster:delete")
-    public void delete(@RequestBody Long[] ids){
+    public Long[] delete(@RequestBody Long[] ids){
+        return ids;
     }
 
 }
